@@ -1,6 +1,9 @@
 require 'rubygems'
 require 'sinatra'
 require 'twilio-ruby'
+require 'dotenv'
+
+Dotenv.load
 
 # Load configuration from system environment variables - see the README for more
 # on these variables.
@@ -55,3 +58,39 @@ get '/hello' do
   content_type 'text/xml'
   response.text
 end
+
+# Render a TwiML document that will say a message back to the user
+get '/hello-sms' do
+  # Build a TwiML response
+  response = Twilio::TwiML::Response.new do |r|
+    r.Sms 'Hello there! You have successfully configured a web hook.'
+    r.Sms 'Good luck on your Twilio quest!', :voice => 'woman'
+  end
+
+  # Render an XML (TwiML) document
+  content_type 'text/xml'
+  response.text
+end
+
+post '/voicemail' do
+  p params
+  response = Twilio::TwiML::Response.new do |r|
+
+    if params[:Digits]
+      r.Say "You entered: #{params[:Digits]}"
+    else
+      r.Gather numDigits: 1 do
+        r.Say "Thanks for calling bla bla"
+        r.Say "Pess 1 to leave a message."
+        r.Say "Pess 2 to listen to the last messages"
+      end
+    end
+  end
+
+  content_type 'text/xml'
+  response.text
+end
+
+
+
+
