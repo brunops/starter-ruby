@@ -3,6 +3,7 @@ GEM
   specs:
     backports (3.3.3)
     builder (3.2.2)
+    dotenv (0.9.0)
     jwt (0.1.8)
       multi_json (>= 1.5)
     multi_json (1.7.9)
@@ -35,6 +36,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv
   rack-flash3
   sinatra
   sinatra-contrib
